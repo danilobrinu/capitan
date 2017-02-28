@@ -9,15 +9,15 @@
     <td><%= sprint.description %></td>
     <td>
         <%= link_to [:admin,sprint] do %>
-          <button class="btn btn-primary"><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Detalle</button>
+          <button class="btn btn-primary"><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;</button>
         <% end %>
 
         <%= link_to edit_admin_sprint_path(sprint) do %>
-          <button class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;Editar</button>
+          <button class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;</button>
         <% end %>
 
         <%= link_to [:admin,sprint], method: :delete, data: { confirm: '¿Estas seguro?' } do %>
-          <button class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Eliminar</button>
+          <button class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;</button>
 
         <% end %>
     </td>
