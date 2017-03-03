@@ -52,8 +52,8 @@ class Track < ActiveRecord::Base
         # teachers = [ {name: "John", image: "teachers/lima/gian.jpg", title: "Full Stack Developer", mail: "john@laboratoria.la"},
         #              {name: "Elizabeth Portilla", image: "teachers/lima/elizabeth.jpg", title: "Full Stack Developer", mail: "elizabeth@laboratoria.la"},
         #              {name: "Lupo", image: "teachers/lima/ivan.jpg", title: "Full Stack Developer", mail: "lupo@laboratoria.la"}]
-         
-        else 
+
+        else
         teachers = [ {name: "Giancarlo Corzo", image: "teachers/lima/gian.jpg", title: "Full Stack Developer", mail: "gian@laboratoria.la"},
                      {name: "Elizabeth Portilla", image: "teachers/lima/elizabeth.jpg", title: "Full Stack Developer", mail: "elizabeth@laboratoria.la"},
                      {name: "Iván Medina", image: "teachers/lima/ivan.jpg", title: "Back End Developer", mail: "ivan@laboratoria.la"}]
@@ -61,8 +61,7 @@ class Track < ActiveRecord::Base
       when "MéXICO"
         teachers = [ {name: "Grissel Rocha", image: "teachers/mexico/grissel.jpg", title: "Full Stack Developer", mail: "grissel@laboratoria.mx"} ]
       when "CHILE"
-        teachers = [ {name: "Blanca Pérez", image: "teachers/chile/blanca.jpg", title: "Full Stack Developer", mail: "blanca@laboratoria.cl"},
-                     {name: "Matias Bensan", image: "teachers/chile/matias.jpg", title: "Full Stack Developer", mail: "matias@laboratoria.cl"}]
+        teachers = [ {name: "Blanca Pérez", image: "teachers/chile/blanca.jpg", title: "Full Stack Developer", mail: "blanca@laboratoria.cl"}]
       when "AREQUIPA"
         teachers = [ {name: "Gerson Aduviri", image: "teachers/arequipa/gerson.jpg", title: "Full Stack Developer", mail: "gerson@laboratoria.la"} ]
     end
