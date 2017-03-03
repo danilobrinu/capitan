@@ -18,6 +18,8 @@ class Admin::SprintsController < ApplicationController
   def show
     @lessons = @sprint.lessons
     @soft_skills = @sprint.soft_skills.all.group_by(&:stype)
+    @teachers = @sprint.users.where("sprint_users.jedi = ? ", false)
+    @jedis = @sprint.users.where("sprint_users.jedi = ? ", true)
   end
 
   def group_sprints
@@ -28,14 +30,23 @@ class Admin::SprintsController < ApplicationController
 
   def new
     @sprint = Sprint.new
-    @tracks = Track.all.includes(:courses => {:units => {:lessons => :pages}})
-    @soft_skills = SoftSkill.all.group_by(&:stype)
+    load_new_edit_info
   end
 
   def edit
     @sprint_pages_ids = @sprint.sprint_pages.pluck(:page_id,:points)
+    load_new_edit_info
+  end
+
+  def load_new_edit_info
     @tracks = Track.all.includes(:courses => {:units => {:lessons => :pages}})
     @soft_skills = SoftSkill.all.group_by(&:stype)
+    @users_by_branch = User.all.
+                       includes(:profile,{:group => :branch}).
+                       where(role: [User.roles[:assistant],
+                                   User.roles[:teacher],
+                                   User.roles[:admin]]).
+                       group_by(&:branch)
   end
 
   def create
@@ -50,10 +61,13 @@ class Admin::SprintsController < ApplicationController
     respond_to do |format|
       update_sprint_pages
       update_sprint_soft_skills
+      update_sprint_teachers
+      update_sprint_jedis
       if @sprint.save
         format.html { redirect_to [:admin,@sprint], notice: 'Sprint was successfully created.' }
         format.json { render :show, status: :created, location: @sprint }
       else
+        load_new_edit_info
         format.html { render :new }
         format.json { render json: @sprint.errors, status: :unprocessable_entity }
       end
@@ -61,14 +75,16 @@ class Admin::SprintsController < ApplicationController
   end
 
   def update
-    p params
     respond_to do |format|
       update_sprint_pages
       update_sprint_soft_skills
+      update_sprint_teachers
+      update_sprint_jedis
       if @sprint.update(sprint_params)
         format.html { redirect_to [:admin,@sprint], notice: 'Sprint was successfully updated.' }
         format.json { render :show, status: :ok, location: @sprint }
       else
+        load_new_edit_info
         format.html { render :edit }
         format.json { render json: @sprint.errors, status: :unprocessable_entity }
       end
@@ -95,6 +111,32 @@ class Admin::SprintsController < ApplicationController
       end
     end
     params[:sprint].delete(:sprint_soft_skills)
+  end
+
+  def update_sprint_teachers
+    if params[:sprint_teachers] != nil
+      @sprint.sprint_users.where(jedi:false).destroy_all
+      @sprint.save
+      params[:sprint_teachers].map do |k,t|
+        if t[:user_id] != nil
+          SprintUser.create(sprint:@sprint,user_id: t[:user_id],jedi:false)
+        end
+      end
+      params[:sprint].delete(:sprint_teachers)
+    end
+  end
+
+  def update_sprint_jedis
+    if params[:sprint_jedis] != nil
+      @sprint.sprint_users.where(jedi:true).destroy_all
+      @sprint.save
+      params[:sprint_jedis].map do |k,t|
+        if t[:user_id] != nil
+          SprintUser.create(sprint:@sprint,user_id: t[:user_id],jedi:true)
+        end
+      end
+      params[:sprint].delete(:sprint_jedis)
+    end
   end
 
   def destroy

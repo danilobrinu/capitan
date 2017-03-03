@@ -25,6 +25,20 @@
           lessonCheckbox.prop('checked',false);
         }
       });
+
+      $("form").validate({
+        rules: {
+          "sprint[name]": {
+            required: true
+          },
+          "sprint[group_id]": {
+            required: true
+          }
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+      });
     });
 
     //Search for all checked values or all no checked
@@ -57,7 +71,7 @@
       <%= f.input :sequence %>
       <%= f.input :name, placeholder: "Ingresa el nombre del sprint", label: false %>
       <%= f.input :description, placeholder: "Ingresa la descripción", label: false %>
-      <%= f.association :group, collection: Branch.all, as: :grouped_select,
+      <%= f.association :group, collection: Branch.all.includes(:groups), as: :grouped_select,
             group_method: :groups, label: false, :include_blank => "Seleccione un grupo" %>
     </fieldset><br>
     <fieldset class="lessons-panel">
@@ -142,7 +156,51 @@
           <% end %>
         </div>
       <% end %>
-    </fieldset><br/>
+    </fieldset><br>
+    <fieldset class="teacher-panel">
+      <legend>Profesores del sprint</legend>
+      <% @users_by_branch.each do |branch,users| %>
+        <h3><%= branch.name %></h3>
+        <div class="teacher-list">
+          <% users.each do |user| %>
+            <span class="checkbox">
+              <label for="sprint_user_ids_<%= user.id %>">
+                <input teacher-id="<%= user.id %>"
+                class="check_boxes optional"
+                type="checkbox"
+                value="<%= user.id %>"
+                <%= @sprint.users.where("sprint_users.jedi = ?",false).pluck(:id).include?(user.id) ? "checked" : "" %>
+                name="sprint_teachers[<%= user.id %>[user_id]]"
+                id="sprint_user_ids_<%= user.id %>">
+                <%= user.full_name %>
+              </label>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    </fieldset><br>
+    <fieldset class="jedis-panel">
+      <legend>Jedis del sprint</legend>
+      <% @users_by_branch.each do |branch,users| %>
+        <h3><%= branch.name %></h3>
+        <div class="jedi-list">
+          <% users.each do |user| %>
+            <span class="checkbox">
+              <label for="sprint_jedi_ids_<%= user.id %>">
+                <input jedi-id="<%= user.id %>"
+                class="check_boxes optional"
+                type="checkbox"
+                value="<%= user.id %>"
+                <%= @sprint.users.where("sprint_users.jedi = ?",true).pluck(:id).include?(user.id) ? "checked" : "" %>
+                name="sprint_jedis[<%= user.id %>[user_id]]"
+                id="sprint_jedi_ids_<%= user.id %>">
+                <%= user.full_name %>
+              </label>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    </fieldset><br>
     <fieldset>
       <legend>Badges para este sprint</legend>
       <%= f.association :badges,
@@ -154,7 +212,7 @@
     </fieldset>
   </div>
   <div class="form-actions">
-    <%= f.button :submit,"Crear sprint", class: 'btn btn-primary' %>
+    <%= f.button :submit,id:"submit-sprint", class: 'btn btn-primary' %>
     <%= link_to 'Cancelar', admin_sprints_path, class: 'btn btn-danger' %>
   </div>
 <% end %>

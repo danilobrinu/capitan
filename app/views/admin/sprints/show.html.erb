@@ -54,6 +54,28 @@
   </div>
 
   <div class="panel panel-default">
+      <div class="panel-heading">Teachers</div>
+      <div class="panel-body">
+        <% if @teachers.each do |teacher| %>
+          <p><%= teacher.full_name %></p>
+        <% end.empty? %>
+          <p>No hay profesores asociados a este sprint</p>
+        <% end %>
+      </div>
+  </div>
+
+  <div class="panel panel-default">
+      <div class="panel-heading">Jedis</div>
+      <div class="panel-body">
+        <% if @jedis.each do |jedi| %>
+          <p><%= jedi.full_name %></p>
+        <% end.empty? %>
+          <p>No hay Jedis asociados a este sprint</p>
+        <% end %>
+      </div>
+  </div>
+
+  <div class="panel panel-default">
     <div class="panel-heading">Badges disponibles en este sprint</div>
     <div class="panel-body">
       <% if @sprint.badges.each do |badge| %>

@@ -6,7 +6,7 @@
 #  name              :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  description       :string(255)
+#  description       :text(65535)
 #  syllabus          :string(255)
 #  color             :string(255)
 #  icon_file_name    :string(255)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170111172256) do
+ActiveRecord::Schema.define(version: 20170301195624) do
 
   create_table "answers", force: :cascade do |t|
     t.integer  "page_id",    limit: 4
@@ -390,6 +390,17 @@ ActiveRecord::Schema.define(version: 20170111172256) do
     t.datetime "updated_at",                                       null: false
   end
 
+  create_table "sprint_users", force: :cascade do |t|
+    t.integer  "sprint_id",  limit: 4
+    t.integer  "user_id",    limit: 4
+    t.boolean  "jedi",       limit: 1, default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "sprint_users", ["sprint_id"], name: "index_sprint_users_on_sprint_id", using: :btree
+  add_index "sprint_users", ["user_id"], name: "index_sprint_users_on_user_id", using: :btree
+
   create_table "sprints", force: :cascade do |t|
     t.string   "name",        limit: 255
     t.text     "description", limit: 65535
@@ -524,6 +535,8 @@ ActiveRecord::Schema.define(version: 20170111172256) do
   add_foreign_key "sprint_badges", "sprints"
   add_foreign_key "sprint_pages", "pages"
   add_foreign_key "sprint_pages", "sprints"
+  add_foreign_key "sprint_users", "sprints"
+  add_foreign_key "sprint_users", "users"
   add_foreign_key "sprints", "groups"
   add_foreign_key "units", "courses"
   add_foreign_key "users", "groups"

@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: sprint_users
+#
+#  id         :integer          not null, primary key
+#  sprint_id  :integer
+#  user_id    :integer
+#  jedi       :boolean          default(FALSE)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sprint_id: 
+  user_id: 
+  jedi: false
+
+two:
+  sprint_id: 
+  user_id: 
+  jedi: false

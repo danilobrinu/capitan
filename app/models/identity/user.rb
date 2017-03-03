@@ -36,8 +36,8 @@ class User < ActiveRecord::Base
   before_validation :generate_code
   before_validation :generate_password
 
-  enum role: [:applicant, :student, :assistant, :teacher, :admin, :employer]
-  enum recomended_as: [:frontend, :prototype]
+  enum role: [:applicant, :student, :assistant, :teacher, :admin, :employer]  unless instance_methods.include? :role
+  enum recomended_as: [:frontend, :prototype] unless instance_methods.include? :recomended_as
 
   has_many :authentications, class_name: 'UserAuthentication', dependent: :destroy
   belongs_to :group

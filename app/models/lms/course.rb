@@ -20,7 +20,7 @@ class Course < ActiveRecord::Base
 
     validates :name, presence: true
 
-    enum audience: [:beginner, :intermediate, :advance]
+    enum audience: [:beginner, :intermediate, :advance] unless instance_methods.include? :audience
 
     belongs_to :track
     has_many :units, :dependent => :destroy
