@@ -18,11 +18,13 @@
         <td><%= user.email %></td>
         <td><%= number_to_phone(user.profile.phone1, delimiter: " ") %></td>
         <td><%= number_to_phone(user.profile.phone2, delimiter: " ") %></td>
-        <td style="width:20%">
+        <td style="width:20%;text-align: right;">
           <% if user.disable? %>
-            <a href="#" class="enable-user" data-user-id="<%= user.id %>">
-              <button class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;</button>
-            </a>
+            <button class="btn btn-primary">
+              <a href="#" class="enable-user" data-user-id="<%= user.id %>">
+                <i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+              </a>
+            </button>
           <% else %>
             <%= link_to edit_admin_user_path(user) do %>
               <button class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;</button>
@@ -30,9 +32,11 @@
           <% end %>
 
           <% if user.student? && !user.disable? %>
-            <a href="#" class="disable-user" data-user-id="<%= user.id %>">
-              <button class="btn btn-primary"><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;</button>
-            </a>
+            <button class="btn btn-primary">
+              <a href="#" class="disable-user" data-user-id="<%= user.id %>">
+                <i class="fa fa-ban" aria-hidden="true"></i>&nbsp;
+              </a>
+            </button>
           <% end %>
           <%= link_to [:admin,user], method: :delete, data: { confirm: '¿Estas seguro?' } do %>
             <button class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;</button>
