@@ -35,6 +35,9 @@ class Admin::SprintsController < ApplicationController
 
   def edit
     @sprint_pages_ids = @sprint.sprint_pages.pluck(:page_id,:points)
+    @sprint_soft_skills_ids = SprintSoftSkill.where(sprint_id: @sprint.id).
+                                              pluck(:soft_skill_id,:points).
+                                              map { |s| [s[0],s[1].try(:to_i)] }
     load_new_edit_info
   end
 
