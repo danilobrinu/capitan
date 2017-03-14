@@ -12,7 +12,11 @@ module ProfileHelper
   end
 
   def percent(scored, total)
-    (scored.zero? or total.zero?) ? 0 : (scored / total.to_f) * 100
+    if scored != nil and total != nil
+      percent = (scored.zero? or total.zero?) ? 0 : (scored / total.to_f) * 100
+    else
+      percent = 0
+    end
   end
 
   def zero_or_number(points)
