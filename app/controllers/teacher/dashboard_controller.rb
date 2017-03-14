@@ -56,6 +56,7 @@ class Teacher::DashboardController < ApplicationController
       for i in 0..params[:input][:users].size
         params[:input][:grades].each { |k,v|
           submission = SoftSkillSubmission.find_or_initialize_by(user_id: params[:input][:users][i],soft_skill_id:k)
+          submission.sprint_id = params[:input][:sprint_id]
           submission.points = v[i]
           submission.save
         }
