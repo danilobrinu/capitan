@@ -16,12 +16,20 @@ class SprintSoftSkill < ActiveRecord::Base
 
   scope :with_points, -> { where("sprint_soft_skills.points > 0 or soft_skills.max_points > 0") }
 
-  def self.total_points group_id
-    with_points.
-    joins({:sprint => :group}, :soft_skill).
-    where("groups.id = ?",group_id).
-    group(:stype).
-    pluck(:stype, 'round(sum(coalesce(sprint_soft_skills.points,soft_skills.max_points)))')
+  def self.total_points group_id, sprint_id
+    if sprint_id != nil
+      with_points.
+      joins({:sprint => :group}, :soft_skill).
+      where("groups.id = ? and sprint_id = ?",group_id,sprint_id).
+      group(:stype).
+      pluck(:stype, 'round(sum(coalesce(sprint_soft_skills.points,soft_skills.max_points)))')
+    else
+      with_points.
+      joins({:sprint => :group}, :soft_skill).
+      where("groups.id = ? ",group_id).
+      group(:stype).
+      pluck(:stype, 'round(sum(coalesce(sprint_soft_skills.points,soft_skills.max_points)))')
+    end
   end
 
   def self.student_points user

@@ -2,7 +2,7 @@
   <h3 class="light mb-7 text-center">actitud profesional</h3>
   <div class="row mt-49">
     <% @soft_skills_points.each_with_index do |skill_points, index| %>
-      <div class="col-md-2 col-xs-6 col-sm-4 <%= "col-md-offset-2" if index == 0 %>">
+      <div class="col-md-2 col-xs-6 col-sm-4 <%= "col-md-offset-#{(12 - 2*@soft_skills_points.length)/2}" if index == 0 and (12 - 2*@soft_skills_points.length)/2 > 0 %>">
         <% points = percent(skill_points[:points], skill_points[:max_points]).round %>
           <div class="c100 center <%= "p#{points}" %> small gray">
             <span> <%= points %>% </span>

@@ -25,6 +25,7 @@ class ProfileController < ApplicationController
         @maximum_points = capitalize_page_type(@sprint.total_points) # can be an empty array
         @student_points = @sprint.student_points(@user)
         @soft_skills_points = @sprint.soft_skill_submissions.for_user(@user)
+        @soft_skills_max_points = SprintSoftSkill.total_points(@user.group_id,@sprint.id)
         @avg_students_points = Submission.avg_classroom_points(current_user.group_id,@sprint.id)
         @badge_points = @user.badge_points(@sprint)
       else
@@ -32,6 +33,7 @@ class ProfileController < ApplicationController
         @maximum_points = capitalize_page_type(SprintPage.total_points(@user.group_id))
         @student_points = SprintPage.student_points(@user)
         @soft_skills_points = SoftSkillSubmission.for_user(@user)
+        @soft_skills_max_points = SprintSoftSkill.total_points(@user.group_id,nil)
         @avg_students_points = Submission.avg_all_classroom_points(current_user.group_id)
         @badge_points = @user.sprint_badges.joins(:badge).pluck('badges.points').reduce(&:+)
       end
@@ -54,6 +56,10 @@ class ProfileController < ApplicationController
 
         @max_total_points = sum_points(@data, :y) - (@badge_points != nil ? @badge_points : 0)
         @max_student_points = sum_points(@data, :student_marks)
+
+        @soft_skills_points.each do |ssp|
+          ssp["max_points"] = @soft_skills_max_points.select { |x| x[0] == ssp["stype"]}[0][1]
+        end
 
       end
     end

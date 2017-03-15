@@ -20,7 +20,7 @@ class SoftSkillSubmission < ActiveRecord::Base
   		where(user_id: user.id).
   		joins(:soft_skill).
   		group(:stype).
-  		pluck_to_hash(:stype,'sum(points) as points','sum(max_points) as max_points')
+  		pluck_to_hash(:stype,'sum(points) as points')
   }
 
   scope :avg_classroom_points, -> (user) {
