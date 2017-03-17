@@ -76,6 +76,9 @@ Rails.application.configure do
 
   #Lograge configuration
   config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { :user_id => event.payload[:user_id] }
+  end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

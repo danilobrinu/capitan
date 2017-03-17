@@ -21,10 +21,7 @@ group :development, :test do
   gem 'quiet_assets'
 end
 
-group :production do
-  gem 'lograge'
-end
-
+gem 'lograge'
 gem 'rails-i18n'
 gem 'devise', "4.2.0"
 gem 'omniauth'
