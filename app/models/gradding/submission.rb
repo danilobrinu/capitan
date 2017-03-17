@@ -24,7 +24,7 @@ class Submission < ActiveRecord::Base
                   where("users.disable = 0").
                   where("users.group_id = ?",group_id).
                   group("users.id").
-                  pluck("round(sum(submissions.points))")
+                  pluck("round(sum(submissions.points))").compact
     return (submissions != nil and !submissions.empty?) ? (submissions.inject(0.0) { |sum,el| sum + el }.to_f / submissions.size).round : 0
   end
 
@@ -36,7 +36,7 @@ class Submission < ActiveRecord::Base
                   where("users.group_id = ?",group_id).
                   where("groups.id = ?",group_id).
                   group("users.id").
-                  pluck("round(sum(submissions.points))")
+                  pluck("round(sum(submissions.points))").compact
       return (submissions != nil and !submissions.empty?) ? (submissions.inject(0.0) { |sum,el| sum + el }.to_f / submissions.size).round : 0
   end
 

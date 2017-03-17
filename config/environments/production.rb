@@ -75,7 +75,7 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   #Lograge configuration
-  config.lograge.enabled = true
+  config.lograge.enabled = false
   config.lograge.custom_options = lambda do |event|
     { :user_id => event.payload[:user_id] }
   end
