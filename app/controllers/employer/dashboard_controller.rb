@@ -42,6 +42,11 @@ class Employer::DashboardController < ApplicationController
     @soft_skills_points = SoftSkillSubmission.for_user(@user)
     @avg_soft_skills_points = SoftSkillSubmission.avg_classroom_points(@user)
     @avg_students_points = Submission.avg_all_classroom_points(@user.group_id)
+    @soft_skills_max_points = SprintSoftSkill.total_points(@user.group_id,nil)
+
+    @soft_skills_points.each do |ssp|
+      ssp["max_points"] = @soft_skills_max_points.select { |x| x[0] == ssp["stype"]}[0][1]
+    end
 
     @student_technical_points = { points: (@student_points != nil ? @student_points : 0) + (@badge_points != nil ? @badge_points : 0),
                                   max: @maximum_points }

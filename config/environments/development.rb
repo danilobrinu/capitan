@@ -41,6 +41,12 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  #Lograge configuration
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    { :user_id => event.payload[:user_id] }
+  end
+
   #Mute assets log
   config.assets.quiet = true
 
