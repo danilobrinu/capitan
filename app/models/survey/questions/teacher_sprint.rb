@@ -1,0 +1,2 @@
+class TeacherSprint < Question
+end

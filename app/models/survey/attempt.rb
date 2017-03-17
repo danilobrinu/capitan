@@ -1,18 +1,16 @@
 # == Schema Information
 #
-# Table name: answers
+# Table name: attempts
 #
 #  id         :integer          not null, primary key
-#  page_id    :integer
+#  survey_id  :integer
 #  user_id    :integer
-#  result     :text(65535)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  points     :integer
 #
 
-class Answer < ActiveRecord::Base
-  belongs_to :page
+class Attempt < ActiveRecord::Base
+  belongs_to :survey
   belongs_to :user
-  
+  has_many :answers, inverse_of: :attempt, autosave: true
 end

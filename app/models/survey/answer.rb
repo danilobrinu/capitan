@@ -1,16 +1,20 @@
 # == Schema Information
 #
-# Table name: options
+# Table name: answers
 #
 #  id          :integer          not null, primary key
-#  description :string(255)
+#  attempt_id  :integer
 #  question_id :integer
+#  answer_text :text(65535)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  correct     :boolean
 #
 
-class Option < ActiveRecord::Base
+class Answer < ActiveRecord::Base
   belongs_to :question
-  validates :description, presence: true
+  belongs_to :attempt, inverse_of: :answers
+
+  validates :question, :attempt, presence: true
+
+
 end

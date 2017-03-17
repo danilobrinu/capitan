@@ -11,19 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170301195624) do
+ActiveRecord::Schema.define(version: 20170316223237) do
 
-  create_table "answers", force: :cascade do |t|
-    t.integer  "page_id",    limit: 4
-    t.integer  "user_id",    limit: 4
-    t.text     "result",     limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.integer  "points",     limit: 4
+  create_table "Questions_SprintUsers", id: false, force: :cascade do |t|
+    t.integer "question_id",    limit: 4, null: false
+    t.integer "sprint_user_id", limit: 4, null: false
   end
 
-  add_index "answers", ["page_id"], name: "index_answers_on_page_id", using: :btree
-  add_index "answers", ["user_id"], name: "index_answers_on_user_id", using: :btree
+  create_table "answers", force: :cascade do |t|
+    t.integer  "attempt_id",  limit: 4
+    t.integer  "question_id", limit: 4
+    t.text     "answer_text", limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "answers", ["attempt_id"], name: "index_answers_on_attempt_id", using: :btree
+  add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
+
+  create_table "attempts", force: :cascade do |t|
+    t.integer  "survey_id",  limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "attempts", ["survey_id"], name: "index_attempts_on_survey_id", using: :btree
+  add_index "attempts", ["user_id"], name: "index_attempts_on_user_id", using: :btree
 
   create_table "authentication_providers", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -167,16 +181,6 @@ ActiveRecord::Schema.define(version: 20170301195624) do
 
   add_index "lessons", ["unit_id"], name: "index_lessons_on_unit_id", using: :btree
 
-  create_table "options", force: :cascade do |t|
-    t.string   "description", limit: 255
-    t.integer  "question_id", limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.boolean  "correct",     limit: 1
-  end
-
-  add_index "options", ["question_id"], name: "index_options_on_question_id", using: :btree
-
   create_table "page_visibilities", force: :cascade do |t|
     t.integer  "page_id",    limit: 4
     t.integer  "branch_id",  limit: 4
@@ -285,22 +289,17 @@ ActiveRecord::Schema.define(version: 20170301195624) do
     t.integer "tech_related_activity_id", limit: 4, null: false
   end
 
-  create_table "question_groups", force: :cascade do |t|
-    t.integer  "page_id",     limit: 4
-    t.integer  "question_id", limit: 4
-    t.integer  "sequence",    limit: 4
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
-  add_index "question_groups", ["page_id"], name: "index_question_groups_on_page_id", using: :btree
-  add_index "question_groups", ["question_id"], name: "index_question_groups_on_question_id", using: :btree
-
   create_table "questions", force: :cascade do |t|
-    t.text     "description", limit: 65535
+    t.integer  "survey_id",     limit: 4
+    t.string   "question_text", limit: 255
+    t.integer  "position",      limit: 4
+    t.integer  "min_value",     limit: 4
+    t.integer  "max_value",     limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end
+
+  add_index "questions", ["survey_id"], name: "index_questions_on_survey_id", using: :btree
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "page_id",     limit: 4
@@ -424,6 +423,13 @@ ActiveRecord::Schema.define(version: 20170301195624) do
   add_index "submissions", ["page_id"], name: "index_submissions_on_page_id", using: :btree
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
+  create_table "surveys", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.text     "introduction", limit: 65535
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "tech_related_activities", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -502,8 +508,10 @@ ActiveRecord::Schema.define(version: 20170301195624) do
   add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "answers", "pages"
-  add_foreign_key "answers", "users"
+  add_foreign_key "answers", "attempts"
+  add_foreign_key "answers", "questions"
+  add_foreign_key "attempts", "surveys"
+  add_foreign_key "attempts", "users"
   add_foreign_key "courses", "tracks"
   add_foreign_key "districts", "branches"
   add_foreign_key "educations", "branches"
@@ -513,7 +521,6 @@ ActiveRecord::Schema.define(version: 20170301195624) do
   add_foreign_key "groups", "branches"
   add_foreign_key "job_salaries", "branches"
   add_foreign_key "lessons", "units"
-  add_foreign_key "options", "questions"
   add_foreign_key "page_visibilities", "branches"
   add_foreign_key "page_visibilities", "pages"
   add_foreign_key "pages", "lessons"
@@ -524,8 +531,7 @@ ActiveRecord::Schema.define(version: 20170301195624) do
   add_foreign_key "profiles", "semesters_lefts"
   add_foreign_key "profiles", "spots"
   add_foreign_key "profiles", "users"
-  add_foreign_key "question_groups", "pages"
-  add_foreign_key "question_groups", "questions"
+  add_foreign_key "questions", "surveys"
   add_foreign_key "semesters_lefts", "branches"
   add_foreign_key "soft_skill_submissions", "soft_skills"
   add_foreign_key "soft_skill_submissions", "sprints"

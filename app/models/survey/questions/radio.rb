@@ -1,0 +1,2 @@
+class Radio < Select
+end
