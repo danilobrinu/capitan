@@ -26,7 +26,7 @@ class ProfileController < ApplicationController
         @student_points = @sprint.student_points(@user)
         @soft_skills_points = @sprint.soft_skill_submissions.for_user(@user)
         @soft_skills_max_points = SprintSoftSkill.total_points(@user.group_id,@sprint.id)
-        @avg_students_points = Submission.avg_classroom_points(current_user.group_id,@sprint.id)
+        @avg_students_points = Submission.avg_classroom_points(@user.group_id,@sprint.id)
         @badge_points = @user.badge_points(@sprint)
       else
         @selected_sprint_name = "Total"
@@ -34,7 +34,7 @@ class ProfileController < ApplicationController
         @student_points = SprintPage.student_points(@user)
         @soft_skills_points = SoftSkillSubmission.for_user(@user)
         @soft_skills_max_points = SprintSoftSkill.total_points(@user.group_id,nil)
-        @avg_students_points = Submission.avg_all_classroom_points(current_user.group_id)
+        @avg_students_points = Submission.avg_all_classroom_points(@user.group_id)
         @badge_points = @user.sprint_badges.joins(:badge).pluck('badges.points').reduce(&:+)
       end
 
@@ -45,13 +45,15 @@ class ProfileController < ApplicationController
       @student_points = capitalize_page_type(@student_points) # can be an empty array
       @max_total_points = @maximum_points.map {|e| e[0] != "badges" ? e[1] : 0}.sum
 
-      if !@maximum_points.empty? and @maximum_points.length == @student_points.length
-        @data = @maximum_points.zip(@student_points).map { |arr|
-          { name: arr.first.first,
-            y: arr.first.last,
-            student_marks: arr.last.last
+      if !@maximum_points.empty?
+        @data = @maximum_points.map { |max|
+          stp = @student_points.select { |x| x[0] == max[0] }.first
+          { name: max[0],
+            y: max[1],
+            student_marks: stp != nil ? stp[1] : 0
           }
         }
+
         @data = @data.select{ |x| x[:y] > 0 }
 
         @max_total_points = sum_points(@data, :y) - (@badge_points != nil ? @badge_points : 0)
