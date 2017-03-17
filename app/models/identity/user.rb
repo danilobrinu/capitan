@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
   has_many :enrollments, :dependent => :destroy
   has_many :courses, through: :enrollments
   has_many :submissions, :dependent => :destroy
+  has_many :soft_skill_submissions, :dependent => :destroy
   has_many :pages, through: :submissions
   has_many :primary_reviews, :class_name => "Review", :foreign_key => "user_id"
   has_many :secondary_reviews, :class_name => "Review", :foreign_key => "reviewer_id"
