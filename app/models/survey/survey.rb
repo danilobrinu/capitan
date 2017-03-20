@@ -8,7 +8,6 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-
 class Survey < ActiveRecord::Base
   has_many :questions
   validates :name, :presence => true

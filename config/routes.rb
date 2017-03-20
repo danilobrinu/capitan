@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
   authenticate :user do
 
+    namespace :survey do
+      get 'show/:id' => "render#show"
+    end
+
     namespace :employer do
       get 'dashboard/coders'
       get 'dashboard/profile/:user_id' => 'dashboard#profile', as: :student_profile

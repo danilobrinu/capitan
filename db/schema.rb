@@ -13,11 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20170316223237) do
 
-  create_table "Questions_SprintUsers", id: false, force: :cascade do |t|
-    t.integer "question_id",    limit: 4, null: false
-    t.integer "sprint_user_id", limit: 4, null: false
-  end
-
   create_table "answers", force: :cascade do |t|
     t.integer  "attempt_id",  limit: 4
     t.integer  "question_id", limit: 4
@@ -290,16 +285,24 @@ ActiveRecord::Schema.define(version: 20170316223237) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.integer  "survey_id",     limit: 4
-    t.string   "question_text", limit: 255
-    t.integer  "position",      limit: 4
-    t.integer  "min_value",     limit: 4
-    t.integer  "max_value",     limit: 4
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "survey_id",      limit: 4
+    t.string   "type",           limit: 255
+    t.string   "question_text",  limit: 255
+    t.integer  "position",       limit: 4
+    t.text     "answer_options", limit: 65535
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_index "questions", ["survey_id"], name: "index_questions_on_survey_id", using: :btree
+
+  create_table "questions_sprint_users", id: false, force: :cascade do |t|
+    t.integer "question_id",    limit: 4, null: false
+    t.integer "sprint_user_id", limit: 4, null: false
+  end
+
+  add_index "questions_sprint_users", ["question_id", "sprint_user_id"], name: "index_questions_sprint_users_on_question_id_and_sprint_user_id", using: :btree
+  add_index "questions_sprint_users", ["sprint_user_id", "question_id"], name: "index_questions_sprint_users_on_sprint_user_id_and_question_id", using: :btree
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "page_id",     limit: 4

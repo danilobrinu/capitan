@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Encuesta - <%= @survey.name %></h1>
+      <p><%= @survey.introduction %></p>
+      <% @survey.questions.each do |question| %>
+        <%= render_question_helper(question) %>
+      <% end %>
+      <table class="table table-striped">
+        <thead>
+          <td>Profesor</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>No asistí</td>
+        </thead>
+        <tbody>
+          <% @teachers.each do |t|%>
+          <tr>
+            <td><%= t %></td>
+            <%=simple_form_for :teacher do |f|%>
+            <%= f.collection_radio_buttons(:options, [[1,"1"],[2,"2"],[3,"3"],[4,"4"],[5,"5"],[6,"6"]], :first, :last) do |b| %>
+            <td><%= b.label { b.radio_button } %></td>
+            <%end%>
+            <%end%>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <h3>¿Qué opinión tienes de tu Jedi Master?</h3>
+      <table class="table table-striped">
+        <thead>
+          <td>Jedi Master</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </thead>
+        <tbody>
+          <% @jedis.each do |j|%>
+          <tr>
+            <td><%= j %></td>
+            <%=simple_form_for :jedi do |f|%>
+            <%= f.collection_radio_buttons(:options, [[1,"1"],[2,"2"],[3,"3"],[4,"4"],[5,"5"]], :first, :last) do |b| %>
+            <td><%= b.label { b.radio_button } %></td>
+            <%end%>
+            <%end%>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <h3>Pensando en todo lo que has aprendido en este sprint, ¿cuál es tu nivel en cada uno de estos temas? </h3>
+      <table class="table table-striped">
+        <thead>
+          <td>Temas</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </thead>
+        <tbody>
+          <% @temas.each do |t|%>
+          <tr>
+            <td><%= t %></td>
+            <%=simple_form_for :tema do |f|%>
+            <%= f.collection_radio_buttons(:options, [[1,"1"],[2,"2"],[3,"3"],[4,"4"],[5,"5"]], :first, :last) do |b| %>
+            <td><%= b.label { b.radio_button } %></td>
+            <%end%>
+            <%end%>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <div class="survey-question mt-35">
+        <h4>En este momento sientes que..</h4>
+        <div class="radio">
+          <%=simple_form_for :tema do |f|%>
+          <%= f.collection_radio_buttons(:options, [[1,"Estoy lista para pasar al sprint #3!!"],[2,"Necesito un repaso general de los temas vistos en el sprint #2"],[3,"Necesito una asesoría personalizada porque realmente tengo muchas dudas"]], :first, :last) do |b| %>
+          <%= b.label { b.radio_button + b.label} %><br>
+          <%end%>
+          <%end%>
+        </div>
+      </div>
+      <div class="survey-question mt-35">
+        <h4>¿En qué grado consideras que Laboratoria está cumpliendo tus expectativas de aprendizaje?</h4>
+        <div class="radio">
+          <%=simple_form_for :learning do |f|%>
+          <%= f.collection_radio_buttons(:options, [[1,"No cumple mis expectativas"],[2,"Cumple mis expectativas"],[3,"Supera mis expectativas"]], :first, :last) do |b| %>
+          <%= b.label { b.radio_button + b.label} %><br>
+          <%end%>
+          <%end%>
+        </div>
+      </div>
+
+      <div class="survey-question mt-35">
+        <h4>¿Qué probabilidad existe de que recomiendes Laboratoria a una amiga?</h4>
+        <table class="table table-striped">
+          <thead>
+            <td></td>
+            <td>0</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>10</td>
+            <td></td>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Para nada probable</td>
+              <%=simple_form_for :recommendation do |f|%>
+              <%= f.collection_radio_buttons(:options, [[0,"0"],[1,"1"],[2,"2"],[3,"3"],[4,"4"],[5,"5"],[6,"6"],[7,"7"],[8,"8"],[9,"9"],[10,"10"]], :first, :last) do |b| %>
+              <td><%= b.label { b.radio_button } %></td>
+              <%end%>
+              <%end%>
+              <td>Extremadamente probable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
