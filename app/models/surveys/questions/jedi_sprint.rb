@@ -10,5 +10,5 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-class TeacherSprint < Question
+class Questions::JediSprint < Question
 end

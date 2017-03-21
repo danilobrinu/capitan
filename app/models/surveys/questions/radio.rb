@@ -10,8 +10,5 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-
-module Questions
-  class Radio < Select
-  end
+class Questions::Radio < Select
 end

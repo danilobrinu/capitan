@@ -10,14 +10,5 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-
-module Questions
-  class Select < Question
-    validates :answer_options, :presence => true
-
-    def options
-      answer_options.split(",")
-    end
-
-  end
+class Questions::TeacherSprint < Question
 end

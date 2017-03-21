@@ -10,5 +10,10 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
-class JediSprint < Question
+class Questions::Select < Question
+  validates :answer_options, :presence => true
+
+  def options
+    answer_options.split(",")
+  end
 end

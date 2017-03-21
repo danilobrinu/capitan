@@ -99,6 +99,6 @@ class ProfileController < ApplicationController
   end
 
   def sum_points data_arr, page_type
-    data_arr.map {|e| e[page_type]}.reduce(&:+)
+    data_arr.map {|e| e[page_type]}.compact.reduce(&:+)
   end
 end
