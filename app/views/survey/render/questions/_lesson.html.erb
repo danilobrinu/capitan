@@ -1,0 +1,19 @@
+<h3><%= question.question_text %></h3>
+<table class="table table-striped">
+  <thead>
+    <td>Temas</td>
+    <% question.options.each do |value| %>
+      <td><%= value %></td>
+    <% end %>
+  </thead>
+  <tbody>
+    <% question.lessons.each do |lesson| %>
+    <tr>
+      <td><%= lesson.title %></td>
+      <%= f.collection_radio_buttons("#{question.id}[#{lesson.id}][value]", question.option_with_labels, :first, :last) do |b| %>
+        <td><%= b.label { b.radio_button } %></td>
+      <%end%>
+    </tr>
+    <%end%>
+  </tbody>
+</table>

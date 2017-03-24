@@ -1,0 +1,21 @@
+<div class="survey-question mt-35 mb-35">
+  <h3><%= question.question_text %></h3>
+  <table class="table table-striped">
+    <thead>
+      <td></td>
+      <% question.options.each do |value| %>
+        <td><%= value %></td>
+      <% end %>
+      <td></td>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= question.min_label %></td>
+        <%= f.collection_radio_buttons("#{question.id}[value]", question.option_with_labels, :first, :last) do |b| %>
+          <td><%= b.label { b.radio_button } %></td>
+        <%end%>
+        <td><%= question.max_label %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

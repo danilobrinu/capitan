@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
     namespace :survey do
       get 'show/:id' => "render#show"
+      post 'show/:id' => "render#saveAnswers"
     end
 
     namespace :employer do

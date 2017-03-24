@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316223237) do
+ActiveRecord::Schema.define(version: 20170316215149) do
 
   create_table "answers", force: :cascade do |t|
     t.integer  "attempt_id",  limit: 4
@@ -286,23 +286,21 @@ ActiveRecord::Schema.define(version: 20170316223237) do
 
   create_table "questions", force: :cascade do |t|
     t.integer  "survey_id",      limit: 4
-    t.string   "type",           limit: 255
+    t.integer  "sprint_id",      limit: 4
+    t.string   "question_type",  limit: 255
     t.string   "question_text",  limit: 255
     t.integer  "position",       limit: 4
     t.text     "answer_options", limit: 65535
+    t.string   "min_label",      limit: 255
+    t.string   "max_label",      limit: 255
+    t.integer  "jedi",           limit: 4
+    t.integer  "question_id",    limit: 4
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
   end
 
+  add_index "questions", ["sprint_id"], name: "index_questions_on_sprint_id", using: :btree
   add_index "questions", ["survey_id"], name: "index_questions_on_survey_id", using: :btree
-
-  create_table "questions_sprint_users", id: false, force: :cascade do |t|
-    t.integer "question_id",    limit: 4, null: false
-    t.integer "sprint_user_id", limit: 4, null: false
-  end
-
-  add_index "questions_sprint_users", ["question_id", "sprint_user_id"], name: "index_questions_sprint_users_on_question_id_and_sprint_user_id", using: :btree
-  add_index "questions_sprint_users", ["sprint_user_id", "question_id"], name: "index_questions_sprint_users_on_sprint_user_id_and_question_id", using: :btree
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "page_id",     limit: 4
@@ -427,10 +425,11 @@ ActiveRecord::Schema.define(version: 20170316223237) do
   add_index "submissions", ["user_id"], name: "index_submissions_on_user_id", using: :btree
 
   create_table "surveys", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.text     "introduction", limit: 65535
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.string   "name",           limit: 255
+    t.text     "introduction",   limit: 65535
+    t.boolean  "single_attempt", limit: 1
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "tech_related_activities", force: :cascade do |t|
@@ -534,6 +533,7 @@ ActiveRecord::Schema.define(version: 20170316223237) do
   add_foreign_key "profiles", "semesters_lefts"
   add_foreign_key "profiles", "spots"
   add_foreign_key "profiles", "users"
+  add_foreign_key "questions", "sprints"
   add_foreign_key "questions", "surveys"
   add_foreign_key "semesters_lefts", "branches"
   add_foreign_key "soft_skill_submissions", "soft_skills"

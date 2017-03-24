@@ -1,0 +1,21 @@
+<h3><%= question.question_text %></h3>
+<table class="table table-striped">
+  <thead>
+    <td></td>
+    <% question.options.each do |value| %>
+      <td><%= value %></td>
+    <% end %>
+  </thead>
+  <tbody>
+    <% question.teachers.each do |sprint_user| %>
+    <tr>
+      <td><%= sprint_user.user.profile.name %></td>
+      <%= f.collection_radio_buttons("[#{question.id}][#{sprint_user.id}][value]", question.option_with_labels, :first, :last) do |b| %>
+        <td><%= b.label { b.radio_button } %></td>
+      <%end%>
+      <td></td>
+    </tr>
+    <%end%>
+  </tbody>
+</table>
+<br>

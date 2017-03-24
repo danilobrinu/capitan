@@ -5,8 +5,18 @@ class Survey::RenderController < ApplicationController
 
   def show
     @survey = Survey.find(params[:id])
-    @teachers = ["Lead Teacher","Lead Teacher","Teacher Assistant 1","Teacher Assistant 2", "Teacher Assistant 3"]
-    @jedis = ["Ale", "Andrea Lamas","Arabela","Elizabeth","Lalo","Mafe","Malu","Meche","Michelle","Papu"]
-    @temas = ['Introducción al desarrollo web', 'HTML/ HTML5 y JavaScript en el navegador','Manejo de comandos básicos de git en la terminal','Pruebas unitarias','Git/ Resolución de conflictos/ Branching model','DOM 101']
+  end
+
+  def saveAnswers
+    survey = Survey.find(params[:survey_id])
+    if survey
+      prev_attempt = Attempt.find_by_survey_id(survey.id)
+      render :show, notice: "Gracias por intentarlo pero sólo se puede enviar el formulario una vez."
+      questions = params[:survey_form]
+      questions.each do |question_id,value|
+        question = Question.find(question_id)
+
+      end
+    end
   end
 end

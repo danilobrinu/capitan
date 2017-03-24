@@ -1,0 +1,5 @@
+<h3><%= question.question_text %></h3>
+<div class="survey-textarea">
+  <%= f.input "#{question.id}[value]", as: :text, label: false %>
+</div>
+<br>
