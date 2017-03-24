@@ -207,11 +207,12 @@ class User < ActiveRecord::Base
 
   def next_code
     if !self.group.nil?
-      last_code = User.where(role: [0,1],group_id:self.group.id).
+      last_code = User.where(role: [0,1],group_id: 15).
                       where("code like 'LIM%' or code like 'SCL%' or code like 'MEX%' or code like 'AQP%'").
-                      order("code desc").pluck("code").first
+                      order("cast(substring(code,4,length(code)) as unsigned) desc").pluck("code").first
+
       if last_code != nil
-        last_code.gsub(/[0-9]+/,'') + (last_code.gsub(/\D/,'').to_i + 1).to_s
+        last_code[0..7] + (last_code[8..-1].to_i + 1).to_s.rjust(3,"0")
       else
         last_code = "#{self.group.name}001"
       end
