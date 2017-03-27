@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   end
 
   def signup_branch=(branch_id)
-    self.group = Group.where(branch_id: branch_id).order("name desc").first
+    self.group = Group.where(branch_id: branch_id,accepting_latest_users: true).order("name desc").first
   end
 
   def sprints
@@ -207,7 +207,7 @@ class User < ActiveRecord::Base
 
   def next_code
     if !self.group.nil?
-      last_code = User.where(role: [0,1],group_id: 15).
+      last_code = User.where(role: [0,1],group_id: self.group.id).
                       where("code like 'LIM%' or code like 'SCL%' or code like 'MEX%' or code like 'AQP%'").
                       order("cast(substring(code,4,length(code)) as unsigned) desc").pluck("code").first
 
