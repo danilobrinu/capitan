@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   end
 
   def signup_branch=(branch_id)
-    self.group = Group.where(branch_id: branch_id).order("name desc").first
+    self.group = Group.where(branch_id: branch_id,accepting_latest_users: true).order("name desc").first
   end
 
   def sprints
