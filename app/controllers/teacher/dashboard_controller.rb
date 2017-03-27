@@ -54,16 +54,19 @@ class Teacher::DashboardController < ApplicationController
   def grades_softskill
     if request.post?
       for i in 0..params[:input][:users].size
-        params[:input][:grades].each { |k,v|
-          submission = SoftSkillSubmission.find_or_initialize_by(user_id: params[:input][:users][i],soft_skill_id:k)
-          submission.sprint_id = params[:input][:sprint_id]
-          submission.points = v[i]
-          submission.save
-        }
+        if params[:input][:grades] != nil
+          params[:input][:grades].each { |k,v|
+            submission = SoftSkillSubmission.find_or_initialize_by(user_id: params[:input][:users][i],soft_skill_id:k)
+            submission.sprint_id = params[:input][:sprint_id]
+            submission.points = v[i]
+            submission.save
+          }
+        end
       end
       params[:sprint_id] = params[:input][:sprint_id]
       params[:group_id] = params[:input][:group_id]
       params[:stype] = params[:input][:stype]
+      flash[:success] = "Soft Skills grabados exitosamente"
     end
 
     @sprint = Sprint.find(params[:sprint_id])

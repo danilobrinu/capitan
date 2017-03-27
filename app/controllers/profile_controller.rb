@@ -60,7 +60,11 @@ class ProfileController < ApplicationController
         @max_student_points = sum_points(@data, :student_marks)
 
         @soft_skills_points.each do |ssp|
-          ssp["max_points"] = @soft_skills_max_points.select { |x| x[0] == ssp["stype"]}[0][1]
+          if !@soft_skills_max_points.empty?
+            ssp["max_points"] = @soft_skills_max_points.select { |x| x[0] == ssp["stype"]}[0][1]
+          else
+            ssp["max_points"] = 0
+          end
         end
 
       end
