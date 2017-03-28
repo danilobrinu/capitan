@@ -25,9 +25,11 @@ class Teacher::DashboardController < ApplicationController
     if request.post?
       params[:input][:grades].each { |user_id,grades|
       grades.each { |page_id,grade|
-          submission = Submission.find_or_initialize_by(user_id: user_id,page_id:page_id)
-          submission.points = grade.first
-          submission.save
+          if grade.first != nil
+            submission = Submission.find_or_initialize_by(user_id: user_id,page_id:page_id)
+            submission.points = grade.first
+            submission.save
+          end
         }
       }
 
@@ -56,10 +58,12 @@ class Teacher::DashboardController < ApplicationController
       for i in 0..params[:input][:users].size
         if params[:input][:grades] != nil
           params[:input][:grades].each { |k,v|
-            submission = SoftSkillSubmission.find_or_initialize_by(user_id: params[:input][:users][i],soft_skill_id:k)
-            submission.sprint_id = params[:input][:sprint_id]
-            submission.points = v[i]
-            submission.save
+            if v[i] != nil
+              submission = SoftSkillSubmission.find_or_initialize_by(user_id: params[:input][:users][i],soft_skill_id:k)
+              submission.sprint_id = params[:input][:sprint_id]
+              submission.points = v[i]
+              submission.save
+            end
           }
         end
       end

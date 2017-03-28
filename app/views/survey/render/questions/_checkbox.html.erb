@@ -1,7 +1,7 @@
 <div class="survey-question mt-35">
   <h3><%= question.question_text %></h3>
   <div class="radio">
-    <%= f.collection_radio_buttons("#{question.id}[value]", question.option_with_labels, :first, :last) do |b| %>
+    <%= f.collection_radio_buttons("[questions]#{question.id}[value]", question.option_with_labels, :first, :last) do |b| %>
       <%= b.label { b.radio_button + b.label} %><br>
     <%end%>
   </div>

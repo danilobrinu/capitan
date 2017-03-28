@@ -10,7 +10,7 @@
     <% question.lessons.each do |lesson| %>
     <tr>
       <td><%= lesson.title %></td>
-      <%= f.collection_radio_buttons("#{question.id}[#{lesson.id}][value]", question.option_with_labels, :first, :last) do |b| %>
+      <%= f.collection_radio_buttons("[questions]#{question.id}[#{lesson.id}][value]", question.option_with_labels, :first, :last) do |b| %>
         <td><%= b.label { b.radio_button } %></td>
       <%end%>
     </tr>

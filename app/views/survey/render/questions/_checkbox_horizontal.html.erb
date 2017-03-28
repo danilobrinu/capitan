@@ -11,7 +11,7 @@
     <tbody>
       <tr>
         <td><%= question.min_label %></td>
-        <%= f.collection_radio_buttons("#{question.id}[value]", question.option_with_labels, :first, :last) do |b| %>
+        <%= f.collection_radio_buttons("[questions]#{question.id}[value]", question.option_with_labels, :first, :last) do |b| %>
           <td><%= b.label { b.radio_button } %></td>
         <%end%>
         <td><%= question.max_label %></td>

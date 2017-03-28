@@ -8,14 +8,20 @@ class Survey::RenderController < ApplicationController
   end
 
   def saveAnswers
-    survey = Survey.find(params[:survey_id])
+    p params
+    form = params[:survey_form]
+    survey = Survey.find(form[:survey_id])
     if survey
       prev_attempt = Attempt.find_by_survey_id(survey.id)
-      render :show, notice: "Gracias por intentarlo pero sólo se puede enviar el formulario una vez."
-      questions = params[:survey_form]
-      questions.each do |question_id,value|
+      if prev_attempt and survey.single_attempt
+        render :show, notice: "Gracias por intentarlo pero sólo se puede
+                               enviar el formulario una vez."
+      end
+      attempt = Attempt.new(survey:survey,current_user)
+      form[:questions].each do |question_id,data|
         question = Question.find(question_id)
-
+        answer = Answer.new(question: question)
+        answer.answer_text = question.process_data(data)
       end
     end
   end
