@@ -61,11 +61,13 @@ class Employer::DashboardController < ApplicationController
     @sprints = @user.group.sprints.joins(:pages).where("pages.points > 0 or sprint_pages.points > 0").order(:sequence).distinct
     @sprint_points = Array.new
     @sprints.each do |sprint|
+      student_points = sprint.student_points(@user)
+      total_points = sprint.total_point
       @sprint_points << {
         name: sprint.name,
         description: sprint.description,
-        max: sprint.total_points.map { |e| e[1] }.reduce(&:+),
-        points: sprint.student_points(@user).map { |e| e[1] }.reduce(&:+),
+        max: student_points != nil ? student_points.map { |e| e[1] }.reduce(&:+) : 0,
+        points: total_points != nil ? total_points.map { |e| e[1] }.reduce(&:+) : 0,
         average: Submission.avg_classroom_points(@user.group_id,sprint.id)
       }
     end
