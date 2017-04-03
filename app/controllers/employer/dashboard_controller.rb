@@ -25,7 +25,7 @@ class Employer::DashboardController < ApplicationController
 
       @badges_points = User.where(group_id:8).joins(:sprint_badges => :badge).group(:id).pluck(:id,"sum(points)") +
                        User.where(group_id:22).joins(:sprint_badges => :badge).group(:id).pluck(:id,"sum(points)")
-    elsif current_user.branch_id == 4
+    elsif current_user.branch.id == 4
       @students = User.includes(:profile).where(role: 1, disable: 0, group_id: 14)
       @student_technical_points = Submission.students_technical_points(14)
       @student_hse_points = SoftSkillSubmission.students_technical_points(14)
