@@ -62,7 +62,7 @@ class Employer::DashboardController < ApplicationController
     @sprint_points = Array.new
     @sprints.each do |sprint|
       student_points = sprint.student_points(@user)
-      total_points = sprint.total_point
+      total_points = sprint.total_points
       @sprint_points << {
         name: sprint.name,
         description: sprint.description,
