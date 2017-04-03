@@ -42,6 +42,25 @@ class Question < ActiveRecord::Base
     answer_options.split(",").map(&spliting_logic)
   end
 
+  def process_data data
+    answer
+    case question_type
+    when "teacher"
+      answer = data.map { |k,v| "#{k}|#{v['value']}" }.join(",")
+    when "jedi"
+      d = data["value"].split("-")
+      answer = "#{d[1]}|#{d[0]}"
+    when "text"
+      answer = data["value"]
+    when "lesson"
+      answer = data.map { |k,v| "#{k}|#{v['value']}" }.join(",")
+    when "checkbox"
+      answer = data["value"]
+    when "checkbox_horizontal"
+      answer = data["value"]
+    end
+  end
+
   def teachers
     sprint.sprint_users.where(jedi:0).includes(:user => :profile)
   end
