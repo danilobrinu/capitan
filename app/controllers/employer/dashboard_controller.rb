@@ -66,8 +66,8 @@ class Employer::DashboardController < ApplicationController
       @sprint_points << {
         name: sprint.name,
         description: sprint.description,
-        max: student_points != nil ? student_points.map { |e| e[1] }.reduce(&:+) : 0,
-        points: total_points != nil ? total_points.map { |e| e[1] }.reduce(&:+) : 0,
+        max: student_points != nil ? student_points.map { |e| e[1] }.compact.reduce(&:+) : 0,
+        points: total_points != nil ? total_points.map { |e| e[1] }.compact.reduce(&:+) : 0,
         average: Submission.avg_classroom_points(@user.group_id,sprint.id)
       }
     end
